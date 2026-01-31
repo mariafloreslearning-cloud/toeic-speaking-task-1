@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Voice Recorder</title>
+  <title>TOEIC Speaking - Task 1</title>
 
   <style>
     :root{
@@ -62,12 +62,7 @@
       max-width: 72ch;
     }
 
-    .instruction{
-  margin-top: 14px;
-  font-size: 13px;
-  color: #4b5563;
-}
-    
+    /* Prompt box (same feeling as Task 2) */
     .prompt{
       margin: 14px 0 18px;
       background:#f7f8fa;
@@ -83,13 +78,27 @@
       display:flex;
       align-items:center;
       gap:8px;
+      font-weight: 700;
     }
-    .prompt p{
+
+    /* "Text to read aloud" in italic (your request) */
+    .promptLabel{
+      font-style: italic;
+    }
+
+    .promptBody{
       margin: 0;
       color:#111827;
       font-size: 14px;
       line-height: 1.6;
       white-space: pre-wrap;
+    }
+
+    /* Bottom instruction line (same vibe as Task 2) */
+    .instruction{
+      margin-top: 14px;
+      font-size: 13px;
+      color: #4b5563;
     }
 
     .meta{
@@ -235,7 +244,7 @@
     }
     .dangerLink:hover{ background:#ffecec; }
 
-    /* PRO modal overlay for "close tab manually" */
+    /* PRO modal overlay */
     .overlay{
       position:fixed;
       inset:0;
@@ -285,15 +294,19 @@
         Click <strong>Start recording</strong>, then read the text below aloud.
       </div>
 
+      <!-- ✅ Task 1 prompt box aligned with Task 2 -->
       <div class="prompt" id="promptBox">
-        <h2>📄 Text to read aloud</h2>
-        
-        <p id="promptText">Please note that the office will be closed on Friday afternoon for scheduled maintenance.
-Employees are asked to complete any urgent tasks before noon.</p>
-        
-        <p class="instruction">
-  You have 45 seconds to prepare. You will then have 45 seconds to read the text aloud.
-</p>
+        <h2>📄 <span class="promptLabel">Text to read aloud</span></h2>
+
+        <p class="promptBody" id="promptText">
+Please note that the office will be closed on Friday afternoon for scheduled maintenance.
+Employees are asked to complete any urgent tasks before noon.
+        </p>
+
+        <!-- ✅ Same style as Task 2 instruction line -->
+        <div class="instruction">
+          You have 45 seconds to prepare. You will then have 45 seconds to read the text aloud.
+        </div>
       </div>
 
       <div class="meta">
@@ -430,19 +443,14 @@ Employees are asked to complete any urgent tasks before noon.</p>
       setTimeout(() => URL.revokeObjectURL(url), 500);
     }
 
-    function showOverlay(){
-      overlay.style.display = "flex";
-    }
-    function hideOverlay(){
-      overlay.style.display = "none";
-    }
+    function showOverlay(){ overlay.style.display = "flex"; }
+    function hideOverlay(){ overlay.style.display = "none"; }
 
     okBtn.addEventListener("click", hideOverlay);
     overlay.addEventListener("click", (e) => {
       if(e.target === overlay) hideOverlay();
     });
 
-    // Init
     resetUI();
 
     startBtn.onclick = async () => {
@@ -529,14 +537,12 @@ Employees are asked to complete any urgent tasks before noon.</p>
       downloadBlob(currentBlob, filename);
     };
 
-    // ✅ PRO return: try close, then show overlay instructions (no alert)
     returnBtn.addEventListener("click", (e) => {
       e.preventDefault();
       statusEl.textContent = "Returning to the module…";
 
       window.close();
 
-      // If it didn't close, show a professional overlay
       setTimeout(() => {
         showOverlay();
         statusEl.textContent = "Please close this tab to return to the module.";
